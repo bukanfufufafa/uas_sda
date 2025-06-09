@@ -90,3 +90,65 @@ void combat(Character player, Character musuh) {
     }
     cout << "\nPertarungan selesai!\n";
 }
+
+void eksplorasi(treeRuangan *rootRuangan) {
+    if (rootRuangan == NULL) {
+        cout << "Dungeon kosong" << endl;
+        return;
+    }
+
+    treeRuangan *current = rootRuangan;
+    int pilihan;
+    Character player = {"Player", 100, 25, true};
+
+    while (true) {
+        cout << "\n==================================================" << endl;
+        cout << current->namaRuangan << endl;
+        cout << "==================================================" << endl;
+
+        if (current->adaMonster) {
+            cout << "Ada monster: " << current->musuh.name << "! Bersiap untuk bertarung!\n";
+            combat(player, current->musuh);
+            current->adaMonster = false;
+        }
+
+        cout << "Pilihan:\n1. Pintu kiri\n2. Pintu kanan\n3. Kembali\n4. Keluar\nPilihan Anda: ";
+        cin >> pilihan;
+
+        switch (pilihan) {
+        case 1:
+            if (current->kiri != NULL)
+                current = current->kiri;
+            else {
+                cout << "Tidak ada ruangan di kiri.\n";
+                cout << "Tekan enter untuk melanjutkan...";
+                cin.ignore(); cin.get();
+            }
+            break;
+        case 2:
+            if (current->kanan != NULL)
+                current = current->kanan;
+            else {
+                cout << "Tidak ada ruangan di kanan.\n";
+                cout << "Tekan enter untuk melanjutkan...";
+                cin.ignore(); cin.get();
+            }
+            break;
+        case 3:
+            if (current->parent != NULL)
+                current = current->parent;
+            else {
+                cout << "Sudah di ruangan awal.\n";
+                cout << "Tekan enter untuk melanjutkan...";
+                cin.ignore(); cin.get();
+            }
+            break;
+        case 4:
+            return;
+        default:
+            cout << "Pilihan tidak valid.\n";
+            cout << "Tekan enter untuk melanjutkan...";
+            cin.ignore(); cin.get();
+        }
+    }
+}
