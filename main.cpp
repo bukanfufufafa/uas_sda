@@ -152,3 +152,34 @@ void eksplorasi(treeRuangan *rootRuangan) {
         }
     }
 }
+void insertTree(treeRuangan **rootRuangan, int nilai, string nama, bool adaMonster = false, Character musuh = {}, treeRuangan *parent = NULL) {
+    if (*rootRuangan == NULL) {
+        *rootRuangan = new treeRuangan;
+        (*rootRuangan)->data = nilai;
+        (*rootRuangan)->namaRuangan = nama;
+        (*rootRuangan)->adaMonster = adaMonster;
+        (*rootRuangan)->musuh = musuh;
+        (*rootRuangan)->kiri = (*rootRuangan)->kanan = NULL;
+        (*rootRuangan)->parent = parent;
+    } else if (nilai < (*rootRuangan)->data) {
+        insertTree(&(*rootRuangan)->kiri, nilai, nama, adaMonster, musuh, *rootRuangan);
+    } else {
+        insertTree(&(*rootRuangan)->kanan, nilai, nama, adaMonster, musuh, *rootRuangan);
+    }
+}
+
+int main() {
+    deklarasi();
+    Character goblin = {"Goblin", 40, 10, false};
+    Character orc = {"Orc", 60, 15, false};
+
+    insertTree(&pohonRuangan, 10, "Ruangan awal dengan lentera menyala.");
+    insertTree(&pohonRuangan, 5, "Ruangan lembab dan gelap.", true, goblin);
+    insertTree(&pohonRuangan, 4, "Ruangan kecil dengan ukiran aneh.");
+    insertTree(&pohonRuangan, 30, "Ruangan tinggi bergema.", true, orc);
+    insertTree(&pohonRuangan, 7, "Ruangan dengan meja dan kursi rusak.");
+    insertTree(&pohonRuangan, 90, "Ruangan terakhir dengan peti harta.");
+
+    eksplorasi(pohonRuangan);
+    return 0;
+}
