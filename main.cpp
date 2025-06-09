@@ -55,3 +55,38 @@ treeRuangan *pohonRuangan;
 void deklarasi() {
     pohonRuangan = NULL;
 }
+void combat(Character player, Character musuh) {
+    Queue giliran;
+    giliran.enqueue(player);
+    giliran.enqueue(musuh);
+
+    while (giliran.size() > 1) {
+        Character attacker = giliran.dequeue();
+        Character& defender = giliran.frontChar();
+
+        cout << "\n=== Giliran: " << attacker.name << " ===\n";
+        if (attacker.isPlayer) {
+            int pilihan;
+            cout << "HP Kamu: " << attacker.hp << " | Musuh: " << defender.name << " (HP: " << defender.hp << ")\n";
+            cout << "1. Serang\n2. Skip\nPilihan: ";
+            cin >> pilihan;
+            if (pilihan == 1) {
+                defender.hp -= attacker.atk;
+                cout << attacker.name << " menyerang! \n";
+            } else {
+                cout << attacker.name << " memilih bertahan.\n";
+            }
+        } else {
+            defender.hp -= attacker.atk;
+            cout << attacker.name << " menyerang kamu sebesar " << attacker.atk << "!\n";
+        }
+
+        if (defender.hp <= 0) {
+            cout << defender.name << " telah dikalahkan!\n";
+            giliran.dequeue();
+        }
+
+        if (attacker.hp > 0) giliran.enqueue(attacker);
+    }
+    cout << "\nPertarungan selesai!\n";
+}
