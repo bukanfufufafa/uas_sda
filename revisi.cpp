@@ -292,3 +292,112 @@ void insertRuangan(treeRuangan **rootRuangan, int nilai, string desc, bool adaMu
         insertRuangan(&(*rootRuangan) -> kanan, nilai, desc, adaMusuh, musuh, *rootRuangan);
     }
 }
+
+void eksplorasi(treeRuangan *rootRuangan, Karakter* players[], int jumlahPlayer)
+{
+    if (rootRuangan == NULL)
+    {
+        cout << "Dungeon kosong" << endl;
+        return;
+    }
+
+    treeRuangan *current = rootRuangan;
+    int pilihan;
+
+    while (true)
+    {
+        cout << "\n==================================================" << endl;
+        cout << current -> deskripsi << endl;
+        cout << "==================================================" << endl;
+
+        if (current -> adaMusuh)
+        {
+            cout << "Ada musuh: " << current -> musuh.namaKarakter << "! Bersiap untuk bertarung!" << endl;
+
+            mulaiTurnBase(&(current -> musuh), players, jumlahPlayer);
+
+            current -> adaMusuh = false;
+        }
+
+        cout << "==================================================" << endl;
+        cout << "Pilihan: " << endl;
+        cout << "1. Pintu Kiri" << endl;
+        cout << "2. Pintu Kanan" << endl;
+        cout << "3. Kembali ke Ruangan Sebelumnya" << endl;
+        cout << "4. Keluar dari Game" << endl;
+        cout << "==================================================" << endl;
+        cout << "Masukkan pilihan anda: "; cin >> pilihan;
+
+        switch (pilihan)
+        {
+            case 1:
+                if (current -> kiri != NULL)
+                {
+                    current = current -> kiri;
+                }
+                else
+                {
+                    cout << "Tidak ada ruangan di sebelah kiri" << endl;
+                    cout << "Tekan enter untuk melanjutkan..." << endl;
+                    cin.ignore();
+                    cin.get();
+                }
+                break;
+            case 2:
+                if (current -> kanan != NULL)
+                {
+                    current = current -> kanan;
+                }
+                else
+                {
+                    cout << "Tidak ada ruangan di sebelah kanan" << endl;
+                    cout << "Tekan enter untuk melanjutkan..." << endl;
+                    cin.ignore();
+                    cin.get();
+                }
+                break;
+            case 3:
+                if (current -> parent != NULL)
+                {
+                    current = current -> parent;
+                }
+                else
+                {
+                    cout << "Sudah berada di pintu awal." << endl;
+                    cout << "Tekan enter untuk melanjutkan..." << endl;
+                    cin.ignore();
+                    cin.get();
+                }
+                break;
+            case 4:
+                return;
+            default:
+                cout << "Pilihan tidak tersedia. Silakan input ulang" << endl;
+                cout << "Tekan enter untuk melanjutkan..." << endl;
+                cin.ignore();
+                cin.get();
+        }
+    }
+}
+
+int main()
+{
+    deklarasi();
+    Karakter hero1 = {"Hero1", 100, 25, 15, true};
+    Karakter hero2 = {"Hero2", 90, 20, 10, true};
+    Karakter hero3 = {"Hero3", 80, 30, 12, true};
+    Karakter enemy1 = {"Enemy1", 100, 15, 8, false};
+    Karakter enemy2 = {"Enemy2", 100, 18, 5, false};
+
+    Karakter* players[] = {&hero1, &hero2, &hero3};
+
+    insertRuangan(&pohonRuangan, 10, "Ruangan awal dengan lentera menyala.", false);
+    insertRuangan(&pohonRuangan, 5, "Ruangan lembab dan gelap.", true, enemy1);
+    insertRuangan(&pohonRuangan, 4, "Ruangan kecil dengan ukiran aneh.");
+    insertRuangan(&pohonRuangan, 30, "Ruangan tinggi bergema.", true, enemy2);
+    insertRuangan(&pohonRuangan, 7, "Ruangan dengan meja dan kursi rusak.");
+    insertRuangan(&pohonRuangan, 90, "Ruangan terakhir dengan peti harta.");
+
+    eksplorasi(pohonRuangan, players, 3);
+    return 0;
+}
