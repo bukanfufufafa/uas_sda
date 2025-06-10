@@ -88,7 +88,7 @@ void combat(Character player, Character musuh) {
 
         if (attacker.hp > 0) giliran.enqueue(attacker);
     }
-    cout << "\nPertarungan selesai!\n";
+    cout << "\nPertarungan selesai!\n";
 }
 
 void eksplorasi(treeRuangan *rootRuangan) {
