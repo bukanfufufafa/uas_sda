@@ -2,7 +2,7 @@
 #include <string>
 using namespace std;
 
-const int MAKS_ANTRIAN = 10;
+const int maks_antrian = 3;
 
 struct Character {
     string name;
@@ -12,7 +12,7 @@ struct Character {
 };
 
 struct Queue {
-    Character data[MAKS_ANTRIAN];
+    Character data[maks_antrian];
     int front = -1;
     int rear = -1;
 
@@ -21,7 +21,7 @@ struct Queue {
     }
 
     bool isFull() {
-        return rear == MAKS_ANTRIAN - 1;
+        return rear == maks_antrian - 1;
     }
 
     void enqueue(Character c) {
