@@ -254,3 +254,41 @@ void mulaiTurnBase(Karakter* musuh, Karakter* players[], int jumlahPlayer)
         cout << "Musuh berhasil dikalahkan!" << endl;
     }
 }
+
+struct treeRuangan
+{
+    int data;
+    string deskripsi;
+    bool adaMusuh;
+    Karakter musuh;
+    treeRuangan *kiri, *kanan, *parent;
+};
+
+treeRuangan *pohonRuangan, *rootRuangan;
+
+void deklarasi()
+{
+    pohonRuangan = NULL;
+}
+
+void insertRuangan(treeRuangan **rootRuangan, int nilai, string desc, bool adaMusuh = false, Karakter musuh = {}, treeRuangan *parent = NULL)
+{
+    if (*rootRuangan == NULL)
+    {
+        *rootRuangan = new treeRuangan;
+        (*rootRuangan) -> data = nilai;
+        (*rootRuangan) -> deskripsi = desc;
+        (*rootRuangan) -> adaMusuh = adaMusuh;
+        (*rootRuangan) -> musuh = musuh;
+        (*rootRuangan) -> kiri = (*rootRuangan) -> kanan = NULL;
+        (*rootRuangan) -> parent = parent;
+    }
+    else if (nilai < (*rootRuangan) -> data)
+    {
+        insertRuangan(&(*rootRuangan) -> kiri, nilai, desc, adaMusuh, musuh, *rootRuangan);
+    }
+    else
+    {
+        insertRuangan(&(*rootRuangan) -> kanan, nilai, desc, adaMusuh, musuh, *rootRuangan);
+    }
+}
