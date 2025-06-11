@@ -2,6 +2,7 @@
 #include <windows.h>
 using namespace std;
 
+
 struct Karakter
 {
     string namaKarakter;
@@ -281,6 +282,8 @@ void eksplorasi(treeRuangan *rootRuangan, Karakter* players[], int jumlahPlayer)
         {
             cout << "Ada musuh: " << current -> musuh.namaKarakter << "! Bersiap untuk bertarung!" << endl;
             cout << "==================================================" << endl;
+            Sleep(2000);
+            system("cls");
 
             mulaiTurnBase(&(current -> musuh), players, jumlahPlayer);
 
@@ -290,8 +293,8 @@ void eksplorasi(treeRuangan *rootRuangan, Karakter* players[], int jumlahPlayer)
         if (current -> data == 90)
         {
             cout << "==================================================" << endl;
-            cout << "Selamat, kamu telah mencapai ruangan terakhir!" << endl;
-            cout << "KAMU MENANG! PERMAINAN BERAKHIR" << endl;
+            cout << "  Selamat, kamu telah mencapai ruangan terakhir!" << endl;
+            cout << "         KAMU MENANG! PERMAINAN BERAKHIR" << endl;
             cout << "==================================================" << endl;
             Sleep(3000);
             break;
@@ -365,19 +368,28 @@ void eksplorasi(treeRuangan *rootRuangan, Karakter* players[], int jumlahPlayer)
 void mulaiGame()
 {
     deklarasi();
-    Karakter karakter1 = {"karakter1", 100, 25, 15, true};
-    Karakter karakter2 = {"karakter2", 90, 20, 10, true};
-    Karakter karakter3 = {"karakter3", 80, 30, 12, true};
-    Karakter musuh1 = {"musuh1", 100, 15, 8, false};
-    Karakter musuh2 = {"musuh2", 100, 18, 5, false};
+    // nama, hp, att, speed, isplayer
+    Karakter karakter1 = {"Knight", 100, 25, 15, true};
+    Karakter karakter2 = {"Paladin", 100, 20, 10, true};
+    Karakter karakter3 = {"Healer", 100, 30, 12, true};
+    Karakter jamur = {"Jamur Punya Kaki", 100, 15, 8, false};
+    Karakter tengkorak1 = {"Tengkorak", 80, 18, 5, false};
+    Karakter tengkorak2 = {"Tengkorak", 80, 18, 5, false};
+    Karakter laba2 = {"Laba-Laba", 80, 12, 14, false};
+    Karakter redDragon = {"Naga Merah", 200, 20, 7, false};
 
     Karakter* players[] = {&karakter1, &karakter2, &karakter3};
 
-    insertRuangan(&pohonRuangan, 10, "Ruangan awal dengan lentera menyala.", false);
-    insertRuangan(&pohonRuangan, 5, "Ruangan lembab dan gelap.", true, musuh1);
-    insertRuangan(&pohonRuangan, 4, "Ruangan kecil dengan ukiran aneh.");
-    insertRuangan(&pohonRuangan, 30, "Ruangan tinggi bergema.", true, musuh2);
-    insertRuangan(&pohonRuangan, 7, "Ruangan dengan meja dan kursi rusak.");
+    insertRuangan(&pohonRuangan, 10, "Ruangan awal dengan lentera menyala.");
+    insertRuangan(&pohonRuangan, 9, "Ruangan lembab dan gelap.");
+    insertRuangan(&pohonRuangan, 12, "Ruangan kecil dengan ukiran aneh.");
+    insertRuangan(&pohonRuangan, 2, "Ruangan sempit penuh sarang laba-laba.", true, laba2);
+    insertRuangan(&pohonRuangan, 11, "Ruangan gelap dengan suara aneh.", true, jamur);
+    insertRuangan(&pohonRuangan, 100, "Ruangan penuh tulang belulang.", true, tengkorak1);
+    insertRuangan(&pohonRuangan, 95, "Ruangan yang panas", true, redDragon);
+    insertRuangan(&pohonRuangan, 1, "Ruangan dengan meja dan kursi rusak.");
+    insertRuangan(&pohonRuangan, 7, "Ruangan dengan dinding berlumut.");
+    insertRuangan(&pohonRuangan, 120, "Ruangan dengan patung misterius.");
     insertRuangan(&pohonRuangan, 90, "Ruangan terakhir dengan peti harta.");
 
     system("cls");
