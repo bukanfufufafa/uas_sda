@@ -174,8 +174,8 @@ void mulaiTurnBase(Karakter* musuh, Karakter* players[], int jumlahPlayer)
             cin >> pilihan;
 
             if (pilihan == 1 && musuh -> isAlive()) {
-                cout << sekarang->namaKarakter << " menyerang " << musuh->namaKarakter << " sebesar " << sekarang->attack << endl;
-                musuh -> takeDamage(sekarang->attack);
+                cout << sekarang -> namaKarakter << " menyerang " << musuh->namaKarakter << " sebesar " << sekarang->attack << endl;
+                musuh -> takeDamage(sekarang -> attack);
             } else {
                 cout << "Target tidak valid atau sudah mati." << endl;
             }
@@ -369,16 +369,15 @@ void mulaiGame()
 {
     deklarasi();
     // nama, hp, att, speed, isplayer
-    Karakter karakter1 = {"Knight", 100, 25, 15, true};
-    Karakter karakter2 = {"Paladin", 100, 20, 10, true};
-    Karakter karakter3 = {"Healer", 100, 30, 12, true};
-    Karakter jamur = {"Jamur Punya Kaki", 100, 15, 8, false};
-    Karakter tengkorak1 = {"Tengkorak", 80, 18, 5, false};
-    Karakter tengkorak2 = {"Tengkorak", 80, 18, 5, false};
+    Karakter knight = {"Knight", 100, 25, 15, true};
+    Karakter paladin = {"Paladin", 120, 35, 10, true};
+    Karakter healer = {"Healer", 100, 10, 12, true};
+    Karakter jamur = {"Jamur Punya Kaki", 100, 10, 8, false};
+    Karakter tengkorak1 = {"Tengkorak", 80, 18, 12, false};
     Karakter laba2 = {"Laba-Laba", 80, 12, 14, false};
-    Karakter redDragon = {"Naga Merah", 200, 20, 7, false};
+    Karakter redDragon = {"Naga Merah", 200, 40, 30, false};
 
-    Karakter* players[] = {&karakter1, &karakter2, &karakter3};
+    Karakter* players[] = {&knight, &paladin, &healer};
 
     insertRuangan(&pohonRuangan, 10, "Ruangan awal dengan lentera menyala.");
     insertRuangan(&pohonRuangan, 9, "Ruangan lembab dan gelap.");
