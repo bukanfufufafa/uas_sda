@@ -193,24 +193,28 @@ void mulaiTurnBase(Karakter* musuh, Karakter* players[], int jumlahPlayer)
 
     while (musuh -> isAlive()) {
         bool masihAdaPlayerHidup = false;
-        for (int i = 0; i < jumlahPlayer; i++) {
+        for (int i = 0; i < jumlahPlayer; i++) 
+        {
             if (players[i] -> isAlive()) {
                 masihAdaPlayerHidup = true;
                 break;
             }
         }
 
-        if (!masihAdaPlayerHidup) {
+        if (!masihAdaPlayerHidup) 
+        {
             break;
         }
 
         Karakter* sekarang = antriGiliran.keluarAntrian();
 
-        if (!sekarang -> isAlive()) {
+        if (!sekarang -> isAlive()) 
+        {
             continue;
         }
 
-        if (sekarang -> isPlayer) {
+        if (sekarang -> isPlayer) 
+        {
             cout << "--- Giliran " << sekarang->namaKarakter << " ---" << endl;
 
             cout << "Pilih target musuh (1 untuk " << musuh->namaKarakter << "): ";
