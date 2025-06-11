@@ -189,10 +189,10 @@ void mulaiTurnBase(Karakter* musuh, Karakter* players[], int jumlahPlayer)
         antriGiliran.masukAntrian(semua[i]);
     }
 
-    while (musuh->isAlive()) {
+    while (musuh -> isAlive()) {
         bool masihAdaPlayerHidup = false;
         for (int i = 0; i < jumlahPlayer; i++) {
-            if (players[i]->isAlive()) {
+            if (players[i] -> isAlive()) {
                 masihAdaPlayerHidup = true;
                 break;
             }
@@ -204,21 +204,20 @@ void mulaiTurnBase(Karakter* musuh, Karakter* players[], int jumlahPlayer)
 
         Karakter* sekarang = antriGiliran.keluarAntrian();
 
-        if (!sekarang->isAlive()) {
-            continue; // lewati karakter mati
+        if (!sekarang -> isAlive()) {
+            continue;
         }
 
-        if (sekarang->isPlayer) {
+        if (sekarang -> isPlayer) {
             cout << "--- Giliran " << sekarang->namaKarakter << " ---" << endl;
 
             cout << "Pilih target musuh (1 untuk " << musuh->namaKarakter << "): ";
             int pilihan;
             cin >> pilihan;
 
-            if (pilihan == 1 && musuh->isAlive()) {
-                cout << sekarang->namaKarakter << " menyerang " << musuh->namaKarakter
-                     << " sebesar " << sekarang->attack << endl;
-                musuh->takeDamage(sekarang->attack);
+            if (pilihan == 1 && musuh -> isAlive()) {
+                cout << sekarang->namaKarakter << " menyerang " << musuh->namaKarakter << " sebesar " << sekarang->attack << endl;
+                musuh -> takeDamage(sekarang->attack);
             } else {
                 cout << "Target tidak valid atau sudah mati." << endl;
             }
@@ -235,20 +234,20 @@ void mulaiTurnBase(Karakter* musuh, Karakter* players[], int jumlahPlayer)
             }
 
             if (target != nullptr) {
-                cout << sekarang->namaKarakter << " menyerang " << target->namaKarakter
+                cout << sekarang -> namaKarakter << " menyerang " << target->namaKarakter
                      << " sebesar " << sekarang->attack << endl;
                 target->takeDamage(sekarang->attack);
             } else {
-                cout << sekarang->namaKarakter << " tidak punya target hidup." << endl;
+                cout << sekarang -> namaKarakter << " tidak punya target hidup." << endl;
             }
         }
 
-        if (sekarang->isAlive()) {
+        if (sekarang -> isAlive()) {
             antriGiliran.masukAntrian(sekarang);
         }
     }
 
-    if (musuh->isAlive()) {
+    if (musuh -> isAlive()) {
         cout << "Semua player kalah! Musuh menang!" << endl;
     } else {
         cout << "Musuh berhasil dikalahkan!" << endl;
