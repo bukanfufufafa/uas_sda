@@ -62,7 +62,6 @@ struct antriGiliran
         else
         {
             data[depan++] = karakter;
-            cout << "Karakter " << karakter -> namaKarakter << " sudah masuk dalam antrian" << endl;
         }
     }
 
