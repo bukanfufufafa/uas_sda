@@ -1,5 +1,7 @@
 #include <iostream>
+#include <windows.h>
 using namespace std;
+
 
 struct Karakter
 {
@@ -62,7 +64,6 @@ struct antriGiliran
         else
         {
             data[depan++] = karakter;
-            cout << "Karakter " << karakter -> namaKarakter << " sudah masuk dalam antrian" << endl;
         }
     }
 
@@ -104,63 +105,10 @@ void urutanGiliran(Karakter* arr[], int jumlah)
 }
 void printStatus(Karakter* list[], int count)
 {
-    cout << "=== STATUS ===" << endl;
+    cout << "======== STATUS PARTY ========" << endl;
     for (int i = 0; i < count; i++)
     {
         cout << list[i] -> namaKarakter << " - HP: " << list[i] -> hp << endl;
-    }
-}
-
-void giliranTim(Karakter* player, Karakter* musuh[], int jumlahMusuh)
-{
-    system("cls");
-    int pilihan;
-
-    cout << "--- Giliran " << player -> namaKarakter << " ---" << endl;
-    cout << "Pilih target musuh: "; cin >> pilihan;
-    for (int i = 0; i < jumlahMusuh; i++)
-    {
-        if (musuh[i] -> isAlive())
-        {
-            cout << i + 1 << ". " << musuh[i] -> namaKarakter << " (HP: " << musuh[i] -> hp << endl;
-        }
-    }
-
-    Karakter* target = musuh[pilihan - 1];
-
-    if (target -> isAlive())
-    {
-        cout << player -> namaKarakter << " menyerang " << target -> namaKarakter << " sebesar " << player -> attack << endl;
-    }
-    else
-    {
-        cout << "Target sudah mati!" << endl;
-    }
-}
-
-void giliranMusuh(Karakter* musuh, Karakter* players[], int jumlahPlayer)
-{
-    system("cls");
-    cout << "--- Giliran Musuh: " << musuh -> namaKarakter << " ---" << endl;
-    Karakter* target = NULL;
-
-    for (int i = 0; i < jumlahPlayer; i++)
-    {
-        if (players[i] -> isAlive())
-        {
-            target = players[i];
-            break;
-        }
-    }
-
-    if (target != NULL)
-    {
-        cout << musuh -> namaKarakter << " menyerang " << target -> namaKarakter << " sebesar " << musuh -> attack << endl;
-        target -> takeDamage(musuh -> attack);
-    }
-    else
-    {
-        cout << musuh -> namaKarakter << " tidak punya target yang masih hidup" << endl;
     }
 }
 
@@ -193,24 +141,32 @@ void mulaiTurnBase(Karakter* musuh, Karakter* players[], int jumlahPlayer)
 
     while (musuh -> isAlive()) {
         bool masihAdaPlayerHidup = false;
-        for (int i = 0; i < jumlahPlayer; i++) {
+        for (int i = 0; i < jumlahPlayer; i++) 
+        {
             if (players[i] -> isAlive()) {
                 masihAdaPlayerHidup = true;
                 break;
             }
         }
 
-        if (!masihAdaPlayerHidup) {
+        if (!masihAdaPlayerHidup) 
+        {
             break;
         }
 
         Karakter* sekarang = antriGiliran.keluarAntrian();
 
-        if (!sekarang -> isAlive()) {
+        if (!sekarang -> isAlive()) 
+        {
             continue;
         }
 
-        if (sekarang -> isPlayer) {
+        if (sekarang -> isPlayer) 
+        {
+            printStatus(players, jumlahPlayer);
+            cout << "======== STATUS MUSUH ========" << endl;
+            cout << musuh -> namaKarakter << " - HP: " << musuh -> hp << endl;
+            cout << "==============================" << endl;
             cout << "--- Giliran " << sekarang->namaKarakter << " ---" << endl;
 
             cout << "Pilih target musuh (1 untuk " << musuh->namaKarakter << "): ";
@@ -223,8 +179,14 @@ void mulaiTurnBase(Karakter* musuh, Karakter* players[], int jumlahPlayer)
             } else {
                 cout << "Target tidak valid atau sudah mati." << endl;
             }
+            Sleep(2000);
+            system("cls");
 
         } else {
+            printStatus(players, jumlahPlayer);
+            cout << "======== STATUS MUSUH ========" << endl;
+            cout << musuh -> namaKarakter << " - HP: " << musuh -> hp << endl;
+            cout << "==============================" << endl;
             cout << "--- Giliran Musuh: " << sekarang->namaKarakter << " ---" << endl;
 
             Karakter* target = nullptr;
@@ -236,12 +198,13 @@ void mulaiTurnBase(Karakter* musuh, Karakter* players[], int jumlahPlayer)
             }
 
             if (target != nullptr) {
-                cout << sekarang -> namaKarakter << " menyerang " << target->namaKarakter
-                     << " sebesar " << sekarang->attack << endl;
+                cout << sekarang -> namaKarakter << " menyerang " << target->namaKarakter << " sebesar " << sekarang->attack << endl;
                 target -> takeDamage(sekarang->attack);
             } else {
                 cout << sekarang -> namaKarakter << " tidak punya target hidup." << endl;
             }
+            Sleep(2000);
+            system("cls");
         }
 
         if (sekarang -> isAlive()) {
@@ -251,8 +214,10 @@ void mulaiTurnBase(Karakter* musuh, Karakter* players[], int jumlahPlayer)
 
     if (musuh -> isAlive()) {
         cout << "Semua player kalah! Musuh menang!" << endl;
+        Sleep(2000);
     } else {
         cout << "Musuh berhasil dikalahkan!" << endl;
+        Sleep(2000);
     }
 }
 
@@ -316,11 +281,23 @@ void eksplorasi(treeRuangan *rootRuangan, Karakter* players[], int jumlahPlayer)
         if (current -> adaMusuh)
         {
             cout << "Ada musuh: " << current -> musuh.namaKarakter << "! Bersiap untuk bertarung!" << endl;
-            cout << "\n==================================================" << endl;
+            cout << "==================================================" << endl;
+            Sleep(2000);
+            system("cls");
 
             mulaiTurnBase(&(current -> musuh), players, jumlahPlayer);
 
             current -> adaMusuh = false;
+        }
+
+        if (current -> data == 90)
+        {
+            cout << "==================================================" << endl;
+            cout << "  Selamat, kamu telah mencapai ruangan terakhir!" << endl;
+            cout << "         KAMU MENANG! PERMAINAN BERAKHIR" << endl;
+            cout << "==================================================" << endl;
+            Sleep(3000);
+            break;
         }
 
         cout << "==================================================" << endl;
@@ -388,26 +365,50 @@ void eksplorasi(treeRuangan *rootRuangan, Karakter* players[], int jumlahPlayer)
     }
 }
 
-int main()
+void mulaiGame()
 {
     deklarasi();
-    Karakter karakter1 = {"karakter1", 100, 25, 15, true};
-    Karakter karakter2 = {"karakter2", 90, 20, 10, true};
-    Karakter karakter3 = {"karakter3", 80, 30, 12, true};
-    Karakter musuh1 = {"musuh1", 100, 15, 8, false};
-    Karakter musuh2 = {"musuh2", 100, 18, 5, false};
+    // nama, hp, att, speed, isplayer
+    Karakter karakter1 = {"Knight", 100, 25, 15, true};
+    Karakter karakter2 = {"Paladin", 100, 20, 10, true};
+    Karakter karakter3 = {"Healer", 100, 30, 12, true};
+    Karakter jamur = {"Jamur Punya Kaki", 100, 15, 8, false};
+    Karakter tengkorak1 = {"Tengkorak", 80, 18, 5, false};
+    Karakter tengkorak2 = {"Tengkorak", 80, 18, 5, false};
+    Karakter laba2 = {"Laba-Laba", 80, 12, 14, false};
+    Karakter redDragon = {"Naga Merah", 200, 20, 7, false};
 
-    Karakter* players[] = {&karakter1, &karakter2, &karakter2};
+    Karakter* players[] = {&karakter1, &karakter2, &karakter3};
 
-    insertRuangan(&pohonRuangan, 10, "Ruangan awal dengan lentera menyala.", false);
-    insertRuangan(&pohonRuangan, 5, "Ruangan lembab dan gelap.", true, musuh1);
-    insertRuangan(&pohonRuangan, 4, "Ruangan kecil dengan ukiran aneh.");
-    insertRuangan(&pohonRuangan, 30, "Ruangan tinggi bergema.", true, musuh2);
-    insertRuangan(&pohonRuangan, 7, "Ruangan dengan meja dan kursi rusak.");
+    insertRuangan(&pohonRuangan, 10, "Ruangan awal dengan lentera menyala.");
+    insertRuangan(&pohonRuangan, 9, "Ruangan lembab dan gelap.");
+    insertRuangan(&pohonRuangan, 12, "Ruangan kecil dengan ukiran aneh.");
+    insertRuangan(&pohonRuangan, 2, "Ruangan sempit penuh sarang laba-laba.", true, laba2);
+    insertRuangan(&pohonRuangan, 11, "Ruangan gelap dengan suara aneh.", true, jamur);
+    insertRuangan(&pohonRuangan, 100, "Ruangan penuh tulang belulang.", true, tengkorak1);
+    insertRuangan(&pohonRuangan, 95, "Ruangan yang panas", true, redDragon);
+    insertRuangan(&pohonRuangan, 1, "Ruangan dengan meja dan kursi rusak.");
+    insertRuangan(&pohonRuangan, 7, "Ruangan dengan dinding berlumut.");
+    insertRuangan(&pohonRuangan, 120, "Ruangan dengan patung misterius.");
     insertRuangan(&pohonRuangan, 90, "Ruangan terakhir dengan peti harta.");
 
     system("cls");
 
     eksplorasi(pohonRuangan, players, 3);
-    return 0;
+}
+
+int main()
+{
+    system("cls");
+
+    cout << "==================================================" << endl;
+    cout << "Selamat datang di Dungeon!" << endl;
+    cout << "Objektif: Mencari ruangan harta" << endl;
+    cout << "==================================================" << endl;
+    cout << "Tekan enter untuk memulai permainan..." << endl;
+    cin.ignore(); 
+
+    system("cls");
+
+    mulaiGame();
 }
