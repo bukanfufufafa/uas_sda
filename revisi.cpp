@@ -1,6 +1,5 @@
 #include <iostream>
 #include <windows.h>
-#include <vector>
 #include <algorithm>
 using namespace std;
 
@@ -379,40 +378,65 @@ void mulaiGame()
     Karakter laba2 = {"Laba-Laba", 80, 12, 14, false};
     Karakter redDragon = {"Naga Merah", 200, 40, 30, false};
 
-    vector<Karakter> semuaHero = {
+    Karakter semuaHero[5] = {
     {"Knight", 100, 25, 15, true},
     {"Paladin", 120, 35, 10, true},
     {"Healer", 100, 10, 12, true},
-    {"Rogue", 90, 20, 18, true},
-    {"Archer", 95, 22, 17, true}
+    {"Archer", 90, 20, 18, true},
+    {"Mage", 80, 30, 14, true}
 };
 
-Karakter* players[3];
+int terpilih[3] = {-1, -1, -1}; // Untuk menyimpan indeks hero yang dipilih
+int jumlahDipilih = 0;
 
-cout << "=== PILIH 3 HERO UNTUK PETUALANGANMU ===" << endl;
-for (int i = 0; i < semuaHero.size(); i++) {
-    cout << i + 1 << ". " << semuaHero[i].namaKarakter
-         << " (HP: " << semuaHero[i].hp
-         << ", ATK: " << semuaHero[i].attack
-         << ", SPD: " << semuaHero[i].speed << ")" << endl;
-}
-
-int pilihan;
-vector<int> terpilih;
-for (int i = 0; i < 3; i++) {
-    while (true) {
-        cout << "Pilih hero ke-" << i + 1 << " (1-" << semuaHero.size() << "): ";
-        cin >> pilihan;
-        if (pilihan >= 1 && pilihan <= semuaHero.size() &&
-            find(terpilih.begin(), terpilih.end(), pilihan) == terpilih.end()) {
-            players[i] = &semuaHero[pilihan - 1];
-            terpilih.push_back(pilihan);
-            break;
-        } else {
-            cout << "Pilihan tidak valid atau sudah dipilih sebelumnya. Coba lagi." << endl;
+while (jumlahDipilih < 3) {
+    cout << "Pilih Hero ke-" << jumlahDipilih + 1 << ":" << endl;
+    for (int i = 0; i < 5; i++) {
+        // Tampilkan hanya yang belum dipilih
+        bool sudah = false;
+        for (int j = 0; j < jumlahDipilih; j++) {
+            if (terpilih[j] == i) {
+                sudah = true;
+                break;
+            }
+        }
+        if (!sudah) {
+            cout << i + 1 << ". " << semuaHero[i].namaKarakter << " (HP: " << semuaHero[i].hp << ", ATK: " << semuaHero[i].attack << ", SPD: " << semuaHero[i].speed << ")" << endl;
         }
     }
+
+    cout << "Masukkan nomor hero: ";
+    int pilihan;
+    cin >> pilihan;
+
+    if (pilihan < 1 || pilihan > 5) {
+        cout << "Pilihan tidak valid. Coba lagi." << endl;
+        continue;
+    }
+
+    bool sudahDipilih = false;
+    for (int j = 0; j < jumlahDipilih; j++) {
+        if (terpilih[j] == pilihan - 1) {
+            sudahDipilih = true;
+            break;
+        }
+    }
+
+    if (sudahDipilih) {
+        cout << "Hero sudah dipilih sebelumnya." << endl;
+    } else {
+        terpilih[jumlahDipilih++] = pilihan - 1;
+        cout << "Hero berhasil dipilih!" << endl;
+    }
+    Sleep(1000);
+    system("cls");
 }
+
+Karakter* players[3] = {
+        &semuaHero[terpilih[0]],
+        &semuaHero[terpilih[1]],
+        &semuaHero[terpilih[2]]
+    };
 
     insertRuangan(&pohonRuangan, 10, "Ruangan awal dengan lentera menyala.");
     insertRuangan(&pohonRuangan, 9, "Ruangan lembab dan gelap.");
