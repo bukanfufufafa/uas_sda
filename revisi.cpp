@@ -113,6 +113,7 @@ void printStatus(Karakter* list[], int count)
 
 void giliranTim(Karakter* player, Karakter* musuh[], int jumlahMusuh)
 {
+    system("cls");
     int pilihan;
 
     cout << "--- Giliran " << player -> namaKarakter << " ---" << endl;
@@ -139,6 +140,7 @@ void giliranTim(Karakter* player, Karakter* musuh[], int jumlahMusuh)
 
 void giliranMusuh(Karakter* musuh, Karakter* players[], int jumlahPlayer)
 {
+    system("cls");
     cout << "--- Giliran Musuh: " << musuh -> namaKarakter << " ---" << endl;
     Karakter* target = NULL;
 
@@ -227,7 +229,7 @@ void mulaiTurnBase(Karakter* musuh, Karakter* players[], int jumlahPlayer)
 
             Karakter* target = nullptr;
             for (int i = 0; i < jumlahPlayer; i++) {
-                if (players[i]->isAlive()) {
+                if (players[i] -> isAlive()) {
                     target = players[i];
                     break;
                 }
@@ -236,7 +238,7 @@ void mulaiTurnBase(Karakter* musuh, Karakter* players[], int jumlahPlayer)
             if (target != nullptr) {
                 cout << sekarang -> namaKarakter << " menyerang " << target->namaKarakter
                      << " sebesar " << sekarang->attack << endl;
-                target->takeDamage(sekarang->attack);
+                target -> takeDamage(sekarang->attack);
             } else {
                 cout << sekarang -> namaKarakter << " tidak punya target hidup." << endl;
             }
@@ -272,6 +274,7 @@ void deklarasi()
 
 void insertRuangan(treeRuangan **rootRuangan, int nilai, string desc, bool adaMusuh = false, Karakter musuh = {}, treeRuangan *parent = NULL)
 {
+    system("cls");
     if (*rootRuangan == NULL)
     {
         *rootRuangan = new treeRuangan;
@@ -294,6 +297,7 @@ void insertRuangan(treeRuangan **rootRuangan, int nilai, string desc, bool adaMu
 
 void eksplorasi(treeRuangan *rootRuangan, Karakter* players[], int jumlahPlayer)
 {
+    system("cls");
     if (rootRuangan == NULL)
     {
         cout << "Dungeon kosong" << endl;
@@ -305,6 +309,7 @@ void eksplorasi(treeRuangan *rootRuangan, Karakter* players[], int jumlahPlayer)
 
     while (true)
     {
+        system("cls");
         cout << "\n==================================================" << endl;
         cout << current -> deskripsi << endl;
         cout << "==================================================" << endl;
@@ -340,6 +345,7 @@ void eksplorasi(treeRuangan *rootRuangan, Karakter* players[], int jumlahPlayer)
                     cout << "Tekan enter untuk melanjutkan..." << endl;
                     cin.ignore();
                     cin.get();
+                    system("cls");
                 }
                 break;
             case 2:
@@ -353,6 +359,7 @@ void eksplorasi(treeRuangan *rootRuangan, Karakter* players[], int jumlahPlayer)
                     cout << "Tekan enter untuk melanjutkan..." << endl;
                     cin.ignore();
                     cin.get();
+                    system("cls");
                 }
                 break;
             case 3:
@@ -366,6 +373,7 @@ void eksplorasi(treeRuangan *rootRuangan, Karakter* players[], int jumlahPlayer)
                     cout << "Tekan enter untuk melanjutkan..." << endl;
                     cin.ignore();
                     cin.get();
+                    system("cls");
                 }
                 break;
             case 4:
@@ -375,6 +383,7 @@ void eksplorasi(treeRuangan *rootRuangan, Karakter* players[], int jumlahPlayer)
                 cout << "Tekan enter untuk melanjutkan..." << endl;
                 cin.ignore();
                 cin.get();
+                system("cls");
         }
     }
 }
@@ -382,20 +391,22 @@ void eksplorasi(treeRuangan *rootRuangan, Karakter* players[], int jumlahPlayer)
 int main()
 {
     deklarasi();
-    Karakter hero1 = {"Hero1", 100, 25, 15, true};
-    Karakter hero2 = {"Hero2", 90, 20, 10, true};
-    Karakter hero3 = {"Hero3", 80, 30, 12, true};
-    Karakter enemy1 = {"Enemy1", 100, 15, 8, false};
-    Karakter enemy2 = {"Enemy2", 100, 18, 5, false};
+    Karakter karakter1 = {"karakter1", 100, 25, 15, true};
+    Karakter karakter2 = {"karakter2", 90, 20, 10, true};
+    Karakter karakter2 = {"karakter2", 80, 30, 12, true};
+    Karakter musuh1 = {"musuh1", 100, 15, 8, false};
+    Karakter musuh2 = {"musuh2", 100, 18, 5, false};
 
-    Karakter* players[] = {&hero1, &hero2, &hero3};
+    Karakter* players[] = {&karakter1, &karakter2, &karakter2};
 
     insertRuangan(&pohonRuangan, 10, "Ruangan awal dengan lentera menyala.", false);
-    insertRuangan(&pohonRuangan, 5, "Ruangan lembab dan gelap.", true, enemy1);
+    insertRuangan(&pohonRuangan, 5, "Ruangan lembab dan gelap.", true, musuh1);
     insertRuangan(&pohonRuangan, 4, "Ruangan kecil dengan ukiran aneh.");
-    insertRuangan(&pohonRuangan, 30, "Ruangan tinggi bergema.", true, enemy2);
+    insertRuangan(&pohonRuangan, 30, "Ruangan tinggi bergema.", true, musuh2);
     insertRuangan(&pohonRuangan, 7, "Ruangan dengan meja dan kursi rusak.");
     insertRuangan(&pohonRuangan, 90, "Ruangan terakhir dengan peti harta.");
+
+    system("cls");
 
     eksplorasi(pohonRuangan, players, 3);
     return 0;
