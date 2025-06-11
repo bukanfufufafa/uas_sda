@@ -312,11 +312,11 @@ void eksplorasi(treeRuangan *rootRuangan, Karakter* players[], int jumlahPlayer)
         system("cls");
         cout << "\n==================================================" << endl;
         cout << current -> deskripsi << endl;
-        cout << "==================================================" << endl;
 
         if (current -> adaMusuh)
         {
             cout << "Ada musuh: " << current -> musuh.namaKarakter << "! Bersiap untuk bertarung!" << endl;
+            cout << "\n==================================================" << endl;
 
             mulaiTurnBase(&(current -> musuh), players, jumlahPlayer);
 
@@ -393,7 +393,7 @@ int main()
     deklarasi();
     Karakter karakter1 = {"karakter1", 100, 25, 15, true};
     Karakter karakter2 = {"karakter2", 90, 20, 10, true};
-    Karakter karakter2 = {"karakter2", 80, 30, 12, true};
+    Karakter karakter3 = {"karakter3", 80, 30, 12, true};
     Karakter musuh1 = {"musuh1", 100, 15, 8, false};
     Karakter musuh2 = {"musuh2", 100, 18, 5, false};
 
