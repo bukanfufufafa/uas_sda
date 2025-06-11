@@ -287,6 +287,16 @@ void eksplorasi(treeRuangan *rootRuangan, Karakter* players[], int jumlahPlayer)
             current -> adaMusuh = false;
         }
 
+        if (current -> data == 90)
+        {
+            cout << "==================================================" << endl;
+            cout << "Selamat, kamu telah mencapai ruangan terakhir!" << endl;
+            cout << "KAMU MENANG! PERMAINAN BERAKHIR" << endl;
+            cout << "==================================================" << endl;
+            Sleep(3000);
+            break;
+        }
+
         cout << "==================================================" << endl;
         cout << "Pilihan: " << endl;
         cout << "1. Pintu Kiri" << endl;
@@ -352,7 +362,7 @@ void eksplorasi(treeRuangan *rootRuangan, Karakter* players[], int jumlahPlayer)
     }
 }
 
-int main()
+void mulaiGame()
 {
     deklarasi();
     Karakter karakter1 = {"karakter1", 100, 25, 15, true};
@@ -373,5 +383,20 @@ int main()
     system("cls");
 
     eksplorasi(pohonRuangan, players, 3);
-    return 0;
+}
+
+int main()
+{
+    system("cls");
+
+    cout << "==================================================" << endl;
+    cout << "Selamat datang di Dungeon!" << endl;
+    cout << "Objektif: Mencari ruangan harta" << endl;
+    cout << "==================================================" << endl;
+    cout << "Tekan enter untuk memulai permainan..." << endl;
+    cin.ignore(); 
+
+    system("cls");
+
+    mulaiGame();
 }
