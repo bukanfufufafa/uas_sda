@@ -1,6 +1,5 @@
 #include <iostream>
 #include <windows.h>
-#include <algorithm>
 using namespace std;
 
 
