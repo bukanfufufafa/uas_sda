@@ -1,5 +1,7 @@
 #include <iostream>
 #include <windows.h>
+#include <vector>
+#include <algorithm>
 using namespace std;
 
 
@@ -377,7 +379,40 @@ void mulaiGame()
     Karakter laba2 = {"Laba-Laba", 80, 12, 14, false};
     Karakter redDragon = {"Naga Merah", 200, 40, 30, false};
 
-    Karakter* players[] = {&knight, &paladin, &healer};
+    vector<Karakter> semuaHero = {
+    {"Knight", 100, 25, 15, true},
+    {"Paladin", 120, 35, 10, true},
+    {"Healer", 100, 10, 12, true},
+    {"Rogue", 90, 20, 18, true},
+    {"Archer", 95, 22, 17, true}
+};
+
+Karakter* players[3];
+
+cout << "=== PILIH 3 HERO UNTUK PETUALANGANMU ===" << endl;
+for (int i = 0; i < semuaHero.size(); i++) {
+    cout << i + 1 << ". " << semuaHero[i].namaKarakter
+         << " (HP: " << semuaHero[i].hp
+         << ", ATK: " << semuaHero[i].attack
+         << ", SPD: " << semuaHero[i].speed << ")" << endl;
+}
+
+int pilihan;
+vector<int> terpilih;
+for (int i = 0; i < 3; i++) {
+    while (true) {
+        cout << "Pilih hero ke-" << i + 1 << " (1-" << semuaHero.size() << "): ";
+        cin >> pilihan;
+        if (pilihan >= 1 && pilihan <= semuaHero.size() &&
+            find(terpilih.begin(), terpilih.end(), pilihan) == terpilih.end()) {
+            players[i] = &semuaHero[pilihan - 1];
+            terpilih.push_back(pilihan);
+            break;
+        } else {
+            cout << "Pilihan tidak valid atau sudah dipilih sebelumnya. Coba lagi." << endl;
+        }
+    }
+}
 
     insertRuangan(&pohonRuangan, 10, "Ruangan awal dengan lentera menyala.");
     insertRuangan(&pohonRuangan, 9, "Ruangan lembab dan gelap.");
