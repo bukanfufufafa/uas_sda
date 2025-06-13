@@ -2,6 +2,16 @@
 #include <windows.h>
 using namespace std;
 
+struct Karakter;
+
+struct Skill
+{
+    string nama;
+    int damage;
+    string deskripsi;
+
+    void gunakan (Karakter *target);
+};
 
 struct Karakter
 {
@@ -10,6 +20,8 @@ struct Karakter
     int attack;
     int speed;
     bool isPlayer;
+    Skill skills[2];
+    int jumlahSkill = 0;
 
     bool isAlive()
     {
@@ -29,6 +41,12 @@ struct Karakter
         }
     }
 };
+
+void Skill::gunakan (Karakter *target)
+{
+    cout << "Menggunakan skill: " << nama << "!" << endl;
+    target -> takeDamage(damage);
+}
 
 const int maksAntrian=10;
 
@@ -103,6 +121,7 @@ void urutanGiliran(Karakter* arr[], int jumlah)
         }
     }
 }
+
 void printStatus(Karakter* list[], int count)
 {
     cout << "======== STATUS PARTY ========" << endl;
@@ -167,22 +186,41 @@ void mulaiTurnBase(Karakter* musuh, Karakter* players[], int jumlahPlayer)
             cout << "======== STATUS MUSUH ========" << endl;
             cout << musuh -> namaKarakter << " - HP: " << musuh -> hp << endl;
             cout << "==============================" << endl;
-            cout << "--- Giliran " << sekarang->namaKarakter << " ---" << endl;
+            cout << "--- Giliran " << sekarang -> namaKarakter << " ---" << endl;
 
-            cout << "Pilih target musuh (1 untuk " << musuh->namaKarakter << "): ";
-            int pilihan;
+            cout << "Pilih aksi:" << endl;
+            cout << "1. Basic Attack" << endl;
+            for (int i = 0; i < sekarang -> jumlahSkill; i++)
+            {
+                cout << i + 2 << ". " << sekarang -> skills[i].nama << " (" << sekarang -> skills[i].deskripsi << ")" << endl;
+            }
+            int pilihan; 
             cin >> pilihan;
 
-            if (pilihan == 1 && musuh -> isAlive()) {
-                cout << sekarang -> namaKarakter << " menyerang " << musuh->namaKarakter << " sebesar " << sekarang->attack << endl;
+            if (pilihan == 1)
+            {
+                cout << "==============================" << endl;
+                cout << sekarang -> namaKarakter << " menyerang " << musuh -> namaKarakter << " sebesar " << sekarang -> attack << endl;
+                cout << "==============================" << endl;
                 musuh -> takeDamage(sekarang -> attack);
-            } else {
-                cout << "Target tidak valid atau sudah mati." << endl;
             }
-            Sleep(2000);
+            else if (pilihan > 1 && pilihan <= 1 + sekarang -> jumlahSkill)
+            {
+                sekarang -> skills[pilihan - 2].gunakan(musuh);
+                cout << "==============================" << endl;
+                cout << sekarang -> namaKarakter << " menyerang " << musuh -> namaKarakter << " sebesar " << sekarang -> attack << endl;
+                cout << "==============================" << endl;
+            }
+            else
+            {
+                cout << "Aksi tidak valid." << endl;
+            }
+            
+            Sleep(3000);
             system("cls");
-
-        } else {
+        } 
+        else 
+        {
             printStatus(players, jumlahPlayer);
             cout << "======== STATUS MUSUH ========" << endl;
             cout << musuh -> namaKarakter << " - HP: " << musuh -> hp << endl;
@@ -203,7 +241,7 @@ void mulaiTurnBase(Karakter* musuh, Karakter* players[], int jumlahPlayer)
             } else {
                 cout << sekarang -> namaKarakter << " tidak punya target hidup." << endl;
             }
-            Sleep(2000);
+            Sleep(3000);
             system("cls");
         }
 
@@ -214,10 +252,10 @@ void mulaiTurnBase(Karakter* musuh, Karakter* players[], int jumlahPlayer)
 
     if (musuh -> isAlive()) {
         cout << "Semua player kalah! Musuh menang!" << endl;
-        Sleep(2000);
+        Sleep(3000);
     } else {
         cout << "Musuh berhasil dikalahkan!" << endl;
-        Sleep(2000);
+        Sleep(3000);
     }
 }
 
@@ -282,7 +320,7 @@ void eksplorasi(treeRuangan *rootRuangan, Karakter* players[], int jumlahPlayer)
         {
             cout << "Ada musuh: " << current -> musuh.namaKarakter << "! Bersiap untuk bertarung!" << endl;
             cout << "==================================================" << endl;
-            Sleep(2000);
+            Sleep(3000);
             system("cls");
 
             mulaiTurnBase(&(current -> musuh), players, jumlahPlayer);
@@ -368,13 +406,20 @@ void eksplorasi(treeRuangan *rootRuangan, Karakter* players[], int jumlahPlayer)
 void mulaiGame()
 {
     deklarasi();
+
     // nama, hp, att, speed, isplayer
     Karakter knight = {"Knight", 100, 25, 15, true};
     Karakter paladin = {"Paladin", 120, 35, 10, true};
     Karakter healer = {"Healer", 100, 10, 12, true};
+    Karakter archer = {"Archer", 100, 15, 20, true};
+    Karakter mage = {"Mage", 100, 20, 10, true};
+
     Karakter jamur = {"Jamur Punya Kaki", 100, 10, 8, false};
+
     Karakter tengkorak1 = {"Tengkorak", 80, 18, 12, false};
+
     Karakter laba2 = {"Laba-Laba", 80, 12, 14, false};
+
     Karakter redDragon = {"Naga Merah", 200, 40, 30, false};
 
     Karakter semuaHero[5] = {
@@ -384,6 +429,22 @@ void mulaiGame()
     {"Archer", 90, 20, 18, true},
     {"Mage", 80, 30, 14, true}
 };
+
+semuaHero[0].skills[0] = {"Slash", 30, "Serangan pedang kuat"};
+semuaHero[0].jumlahSkill = 1;
+
+semuaHero[1].skills[0] = {"Holy Strike", 40, "Serangan suci ke musuh"};
+semuaHero[1].jumlahSkill = 1;
+
+semuaHero[2].skills[0] = {"Heal", -30, "Sihir Penyembuhan"};
+semuaHero[2].jumlahSkill = 1;
+
+semuaHero[3].skills[0] = {"Poison Arrow", 25, "Menembakkan panah beracun"};
+semuaHero[3].jumlahSkill = 1;
+
+semuaHero[4].skills[0] = {"Fireball", 30, "Serangan bola api"};
+semuaHero[4].skills[1] = {"Ice Blast", 25, "Serangan es"};
+semuaHero[4].jumlahSkill = 2;
 
 int terpilih[3] = {-1, -1, -1}; // Untuk menyimpan indeks hero yang dipilih
 int jumlahDipilih = 0;
