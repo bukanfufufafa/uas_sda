@@ -122,12 +122,45 @@ void urutanGiliran(Karakter* arr[], int jumlah)
     }
 }
 
+string healthBar(int hp, int maxHp, int barLength = 20)
+{
+    int filled = (hp * barLength) / maxHp;
+    string bar = "[";
+
+    for (int i = 0; i < barLength; i++)
+    {
+        if (i < filled) 
+        {
+            bar += "#";
+        }
+        else
+        {
+            bar += "-";
+        }
+    }
+    bar += "]";
+    return bar;
+}
+
 void printStatus(Karakter* list[], int count)
 {
     cout << "======== STATUS PARTY ========" << endl;
     for (int i = 0; i < count; i++)
     {
-        cout << list[i] -> namaKarakter << " - HP: " << list[i] -> hp << endl;
+        int maxHp = 100;
+        if (list[i] -> namaKarakter == "Paladin")
+        {
+            maxHp = 120;
+        }
+        if (list[i] -> namaKarakter == "Archer")
+        {
+            maxHp = 90;
+        }
+        if (list[i] -> namaKarakter == "Mage")
+        {
+            maxHp = 80;
+        }
+        cout << list[i] -> namaKarakter << " - HP: " << list[i] -> hp << " " << healthBar(list[i] -> hp, maxHp) << endl;
     }
 }
 
@@ -183,8 +216,15 @@ void mulaiTurnBase(Karakter* musuh, Karakter* players[], int jumlahPlayer)
         if (sekarang -> isPlayer) 
         {
             printStatus(players, jumlahPlayer);
+
             cout << "======== STATUS MUSUH ========" << endl;
-            cout << musuh -> namaKarakter << " - HP: " << musuh -> hp << endl;
+            int maxHpMusuh = 100;
+            if (musuh -> namaKarakter == "Naga Merah")
+            {
+                maxHpMusuh = 200;
+            }
+
+            cout << musuh -> namaKarakter << " - HP: " << musuh -> hp << " " << healthBar(musuh -> hp, maxHpMusuh) << endl;
             cout << "==============================" << endl;
             cout << "--- Giliran " << sekarang -> namaKarakter << " ---" << endl;
 
@@ -215,7 +255,7 @@ void mulaiTurnBase(Karakter* musuh, Karakter* players[], int jumlahPlayer)
             {
                 cout << "Aksi tidak valid." << endl;
             }
-            
+
             Sleep(3000);
             system("cls");
         } 
