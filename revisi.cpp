@@ -13,6 +13,14 @@ struct Skill
     void gunakan (Karakter *target);
 };
 
+struct Item
+{
+    string nama;
+    string deskripsi;
+    int efekHP = 0;
+    int efekATK = 0;
+};
+
 struct Karakter
 {
     string namaKarakter;
@@ -305,6 +313,8 @@ struct treeRuangan
     string deskripsi;
     bool adaMusuh;
     Karakter musuh;
+    Item item;
+    bool adaItem = false;
     treeRuangan *kiri, *kanan, *parent;
 };
 
@@ -315,7 +325,7 @@ void deklarasi()
     pohonRuangan = NULL;
 }
 
-void insertRuangan(treeRuangan **rootRuangan, int nilai, string desc, bool adaMusuh = false, Karakter musuh = {}, treeRuangan *parent = NULL)
+void insertRuangan(treeRuangan **rootRuangan, int nilai, string desc, bool adaMusuh = false, Karakter musuh = {}, bool adaItem = false, Item item = {}, treeRuangan *parent = NULL)
 {
     system("cls");
     if (*rootRuangan == NULL)
@@ -325,6 +335,8 @@ void insertRuangan(treeRuangan **rootRuangan, int nilai, string desc, bool adaMu
         (*rootRuangan) -> deskripsi = desc;
         (*rootRuangan) -> adaMusuh = adaMusuh;
         (*rootRuangan) -> musuh = musuh;
+        (*rootRuangan) -> adaItem = adaItem;
+        (*rootRuangan) -> item = item;
         (*rootRuangan) -> kiri = (*rootRuangan) -> kanan = NULL;
         (*rootRuangan) -> parent = parent;
     }
@@ -393,6 +405,19 @@ void eksplorasi(treeRuangan *rootRuangan, Karakter* players[], int jumlahPlayer)
                 if (current -> kiri != NULL)
                 {
                     current = current -> kiri;
+
+                    if (current -> adaItem)
+                    {
+                        cout << "Kamu menemukan item: " << current -> item.nama << " - " << current -> item.deskripsi << endl;
+                        for (int i = 0; i < jumlahPlayer; i++)
+                        {
+                            if (current -> item.efekHP != 0)
+                            {
+                                players[i] -> hp += current -> item.efekHP;
+                                cout << players[i] -> namaKarakter << " mendapatkan " << current -> item.efekHP << " HP!" << endl;
+                            }
+                        }
+                    }
                 }
                 else
                 {
@@ -450,7 +475,6 @@ void mulaiGame()
     // nama, hp, att, speed, isplayer
     Karakter knight = {"Knight", 100, 25, 15, true};
     Karakter paladin = {"Paladin", 120, 35, 10, true};
-    Karakter healer = {"Healer", 100, 10, 12, true};
     Karakter archer = {"Archer", 100, 15, 20, true};
     Karakter mage = {"Mage", 100, 20, 10, true};
 
@@ -462,10 +486,9 @@ void mulaiGame()
 
     Karakter redDragon = {"Naga Merah", 200, 40, 30, false};
 
-    Karakter semuaHero[5] = {
+    Karakter semuaHero[4] = {
     {"Knight", 100, 25, 15, true},
     {"Paladin", 120, 35, 10, true},
-    {"Healer", 100, 10, 12, true},
     {"Archer", 90, 20, 18, true},
     {"Mage", 80, 30, 14, true}
 };
@@ -476,22 +499,19 @@ semuaHero[0].jumlahSkill = 1;
 semuaHero[1].skills[0] = {"Holy Strike", 40, "Serangan suci ke musuh"};
 semuaHero[1].jumlahSkill = 1;
 
-semuaHero[2].skills[0] = {"Heal", -30, "Sihir Penyembuhan"};
+semuaHero[2].skills[0] = {"Poison Arrow", 25, "Menembakkan panah beracun"};
 semuaHero[2].jumlahSkill = 1;
 
-semuaHero[3].skills[0] = {"Poison Arrow", 25, "Menembakkan panah beracun"};
-semuaHero[3].jumlahSkill = 1;
-
-semuaHero[4].skills[0] = {"Fireball", 30, "Serangan bola api"};
-semuaHero[4].skills[1] = {"Ice Blast", 25, "Serangan es"};
-semuaHero[4].jumlahSkill = 2;
+semuaHero[3].skills[0] = {"Fireball", 30, "Serangan bola api"};
+semuaHero[3].skills[1] = {"Ice Blast", 25, "Serangan es"};
+semuaHero[3].jumlahSkill = 2;
 
 int terpilih[3] = {-1, -1, -1}; // Untuk menyimpan indeks hero yang dipilih
 int jumlahDipilih = 0;
 
 while (jumlahDipilih < 3) {
     cout << "Pilih Hero ke-" << jumlahDipilih + 1 << ":" << endl;
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < 4; i++) {
         // Tampilkan hanya yang belum dipilih
         bool sudah = false;
         for (int j = 0; j < jumlahDipilih; j++) {
@@ -540,7 +560,7 @@ Karakter* players[3] = {
 
     insertRuangan(&pohonRuangan, 10, "Ruangan awal dengan lentera menyala.");
     insertRuangan(&pohonRuangan, 9, "Ruangan lembab dan gelap.");
-    insertRuangan(&pohonRuangan, 12, "Ruangan kecil dengan ukiran aneh.");
+    insertRuangan(&pohonRuangan, 12, "Ruangan kecil dengan ukiran aneh.", false, {}, true, {"Healing Potion", "Memulihkan 30 HP untuk semua orang", 50, 0});
     insertRuangan(&pohonRuangan, 2, "Ruangan sempit penuh sarang laba-laba.", true, laba2);
     insertRuangan(&pohonRuangan, 11, "Ruangan gelap dengan suara aneh.", true, jamur);
     insertRuangan(&pohonRuangan, 100, "Ruangan penuh tulang belulang.", true, tengkorak1);
